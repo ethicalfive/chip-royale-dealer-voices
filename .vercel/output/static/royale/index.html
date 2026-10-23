@@ -1,0 +1,188 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=overlays-content">
+<title>Chip Royale Blackjack</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0b1630">
+<link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css"></head><body>
+<div id="app">
+<header><b>🂡</b><button id="meBtn" class="mebtn"><img id="meAv" alt=""><span id="me"></span></button><span id="chips"></span><span id="conn" class="conn"></span><button id="bugBtn" class="tiny hidden" title="Send feedback">🐞</button><button id="bell" class="tiny bell hidden" title="Notifications">🔔<span id="bellN" class="badge"></span></button><button id="frBtn" class="tiny msgbtn frbtn hidden" title="Friends" aria-label="Friends">👥<span id="frBadge" class="badge"></span></button><button id="msgBtn" class="tiny msgbtn" title="Messages">✉️<span id="msgN" class="badge"></span></button></header>
+<div class="notice" id="notice">Social casino • Virtual chips only • No cash-out, no prizes</div>
+<main>
+<div id="bootMsg" class="bootmsg"><div class="spin"></div>Reconnecting…</div>
+<section id="login" class="view center"><h1>🃏 Chip Royale</h1>
+  <div id="loginForm" class="col"><input id="uname" placeholder="Username" maxlength="16" autocomplete="username"><input id="pw" type="password" placeholder="Password (6+ chars)" autocomplete="current-password">
+  <label class="small dobl cmp">Date of birth (sign-up, 18+ only)<input id="dob" type="date" max="2100-01-01"></label>
+  <input id="regEmail" type="email" placeholder="Recovery email (optional, for sign-up)" autocomplete="email">
+  <label class="small agree"><input type="checkbox" id="agree"><span>I am 18+ and accept the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> (needed to create an account)</span></label>
+  <div><button id="go" class="primary">Log in</button><button id="reg">Create account</button></div><a href="#" id="forgot" class="small link">Forgot password?</a></div>
+  <div id="resetForm" class="col hidden"><b>Reset password</b><input id="rUser" placeholder="Username"><button id="rSend">Email me a code</button>
+    <input id="rCode" placeholder="6-digit code" inputmode="numeric" maxlength="6"><input id="rPw" type="password" placeholder="New password"><button id="rDo" class="primary">Reset password</button><a href="#" id="rBack" class="small link">Back to log in</a></div>
+  <p class="small" id="inviteNote"></p>
+  <div class="r18 cmp"><b class="r18b">R18+</b><span>Simulated gambling for adults 18+. Chips are virtual, have no monetary value, cannot be cashed out, sold or exchanged for anything of value. Practising here does not mean future success at real gambling.</span></div>
+  <p class="small cmp"><a href="/terms" target="_blank">Terms</a> · <a href="/privacy" target="_blank">Privacy</a> · <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">Gambling Help Online 1800 858 858</a></p></section>
+<section id="lobby" class="view hidden">
+  <div class="bonus"><button id="daily">🎁 Daily</button><button id="ad">📺 Booster</button><button id="storeBtn">💎 Store</button><button id="evBtn">📅 Events</button></div>
+  <div class="gtabs"><button data-g="bj" class="on">🃏 Blackjack</button><button data-g="craps">🎲 Craps</button><button data-g="rou">🎡 Roulette</button><button data-g="tour">🏆 Tourney</button><button data-g="more">🎰 More</button></div>
+  <div id="tiers" class="gpane"></div><div id="crapsList" class="gpane hidden"></div><div id="rouList" class="gpane hidden"></div><div id="tourList" class="gpane hidden"></div>
+  <div id="moreList" class="gpane hidden"><div class="tier slotsT"><h2>🎰 Lucky Lever Slots</h2><div class="btns"><button class="primary" id="openSlots">Play</button></div><div class="small">Pull the lever · bets 1K–10M · solo</div></div>
+    <div class="tier coinT"><h2>🪙 Coin Toss</h2><div class="btns"><button class="primary" id="coinSingle" onclick="send({type:'view',game:'coin',mode:'single'})">View Single</button><button class="primary" id="coinDouble" onclick="send({type:'view',game:'coin',mode:'double'})">View Double</button><button class="qj" id="coinQuick" onclick="send({type:'coinJoin',mode:'single'})">Quick join</button></div><div class="small" id="coinInfo">Single: 1 coin, heads/tails 1.95x · Double: 2 coins, matching pair 3.9x, one of each 1.95x</div></div></div>
+  <div class="join"><input id="code" placeholder="Invite code" maxlength="6"><button id="joinCode">Join private</button></div>
+  <h3>Daily Missions</h3><div id="missions"></div></section>
+<section id="profile" class="view hidden">
+  <div class="ptabs"><button data-pt="me" class="on">Profile</button><button data-pt="sec">Security</button><button data-pt="safe" class="cmp">🛡 Safe play</button><button data-pt="dev" id="devTab" class="hidden">🛠 Dev</button><button id="pClose" class="tiny">✕</button></div>
+  <div class="ppane" id="pt-me"><div id="pStats" class="pstats"></div><label>Display name</label><div class="rowl"><input id="pDisplay" maxlength="20"><button id="pSave" class="primary tiny">Save</button></div>
+    <label>Avatar</label><div id="avGrid" class="avgrid"></div>
+    <label>Enter code</label><div class="rowl"><input id="devCode" placeholder="Code" autocomplete="off" maxlength="40"><button id="devRedeem" class="tiny">Redeem</button></div><div id="roleTag" class="small"></div>
+    <label>Settings</label><div class="rowl"><button id="mute" class="tiny">🔊 Sound on</button><button id="fadeTog" class="tiny">💬 Auto-fade chat: on</button><button id="logout" class="tiny danger">⏻ Log out</button></div>
+    <p class="small legal"><a href="/terms" target="_blank">Terms of Service</a> · <a href="/privacy" target="_blank">Privacy Policy</a> · <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">Gambling Help Online 1800 858 858</a></p></div>
+  <div class="ppane hidden" id="pt-sec"><label>Recovery email</label><div id="emailStatus" class="small"></div>
+    <div class="rowl"><input id="eNew" type="email" placeholder="new@email.com"><button id="eSet" class="tiny">Set</button></div>
+    <div class="rowl"><input id="eCode" placeholder="code" inputmode="numeric" maxlength="6"><button id="eVerify" class="tiny">Verify</button><button id="eCur" class="tiny">Code → current email</button></div>
+    <label>Change password</label><div class="rowl"><input id="cpCur" type="password" placeholder="current password (if no email)"></div>
+    <div class="rowl"><input id="cpNew" type="password" placeholder="new password"><button id="cpDo" class="tiny primary">Change</button></div>
+    <p class="small">Codes expire in 10 minutes. Max 3 codes per 15 minutes.</p></div>
+  <div class="ppane hidden" id="pt-safe"><label>Spend limits (A$, incl. GST)</label><div class="small" id="limStatus"></div>
+    <div class="rowl"><input id="limDay" type="number" inputmode="decimal" placeholder="Daily A$ (blank = none)"><input id="limMonth" type="number" inputmode="decimal" placeholder="Monthly A$"><button id="limSave" class="tiny primary">Save</button></div>
+    <div class="small">Lower limits apply immediately. Raising or removing a limit takes effect after 24 hours.</div>
+    <label>Reality check</label><div class="small">A reminder of your session time appears every 60 minutes.</div>
+    <label>Take a break / self-exclude</label><div class="rowl"><button class="tiny" data-ex="24h">24 hours</button><button class="tiny" data-ex="7d">7 days</button><button class="tiny" data-ex="30d">30 days</button><button class="tiny danger" data-ex="perm">Permanent</button></div>
+    <div class="small">You will be logged out and unable to log in until the period ends.</div>
+    <label>Purchase history</label><div id="purHist" class="small"></div>
+    <div class="helpbox">Worried about your gambling or someone else's? Free, confidential 24/7 support: <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">Gambling Help Online</a> · <b>1800 858 858</b></div>
+    <p class="small"><a href="/terms" target="_blank">Terms of Service</a> · <a href="/privacy" target="_blank">Privacy Policy</a></p></div>
+  <div class="ppane hidden devpane" id="pt-dev"><div class="rowl"><input id="myChips" type="number" inputmode="numeric" placeholder="Set my chips (e.g. 5000000)"><button id="myChipsBtn" class="tiny primary">Set my chips</button><button id="openDevlog" class="tiny">📒 Dev Log</button></div>
+    <div class="npost"><b class="small">📢 Server notice (top bar, all players, live)</b><div class="rowl"><input id="nMsg" maxlength="200" placeholder="e.g. Server update at 18:00 UTC"></div>
+      <div class="rowl"><select id="nLevel"><option value="info">Info</option><option value="warn">Warning</option></select><select id="nTtl"><option value="">Until cleared</option><option value="10m">10 min</option><option value="30m">30 min</option><option value="1h">1 hour</option><option value="1d">1 day</option></select>
+      <button id="nPost" class="tiny primary">Post</button><button id="nClear" class="tiny">Clear</button></div><div id="nCur" class="small">No notice</div></div>
+    <div class="rowl"><input id="aQ" placeholder="Filter players (name)" autocomplete="off"><button id="aAuditBtn" class="tiny">Audit</button></div>
+    <div class="asort" id="aSort"><button data-s="name">Name</button><button data-s="chips">Chips</button><button data-s="seen" class="on">Last seen</button><button data-s="vip">VIP</button></div>
+    <div id="aRes" class="alist"></div>
+    <div class="apager"><button id="aPrev" class="tiny">‹</button><span id="aPage" class="small"></span><button id="aNext" class="tiny">›</button></div>
+    <div id="aAudit" class="small aaudit"></div></div>
+</section>
+<section id="devlog" class="view hidden">
+  <div class="tbar"><button id="dlBack" class="tiny">← Back</button><span>📒 Dev Log</span><span id="dlNext" class="small"></span></div>
+  <div class="ptabs dltabs"><button data-dl="todo" class="on">TODO <span id="dlN" class="badge"></span></button><button data-dl="log">Changelog</button><button data-dl="ver">Versions</button><button data-dl="fb">Feedback</button></div>
+  <div class="dlpane" id="dl-todo"><form id="dlAdd" class="rowl"><input id="dlTitle" placeholder="New TODO…" maxlength="140" autocomplete="off"><select id="dlPrio"><option>normal</option><option>high</option><option>urgent</option><option>low</option></select><button class="tiny primary">Add</button></form>
+    <div id="dlTodos" class="dllist"></div></div>
+  <div class="dlpane hidden" id="dl-log"><div id="dlLog" class="dllist"></div></div>
+  <div class="dlpane hidden" id="dl-ver"><form id="dlVer" class="rowl"><input id="dlVv" placeholder="v0.12" maxlength="20" autocomplete="off"><input id="dlVt" placeholder="Title" maxlength="120" autocomplete="off"><button class="tiny primary">Add</button></form><div id="dlVers" class="dllist"></div></div>
+  <div class="dlpane hidden" id="dl-fb"><div class="asort" id="dlFbF"><button data-f="open" class="on">Unresolved</button><button data-f="done">Resolved</button><button data-f="all">All</button></div><div id="dlFb" class="dllist"></div></div>
+</section>
+<section id="table" class="view hidden">
+  <div class="tbar"><button id="leave" class="tiny">← Lobby</button><span id="tinfo"></span><span id="invite"></span></div>
+  <div class="felt" id="felt">
+    <div class="shoe" id="shoe"><i></i><i></i><i></i></div>
+    <svg class="rules" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><path id="arc" d="M20 20 Q200 150 380 20"/><path id="arc2" d="M60 18 Q200 120 340 18"/></defs>
+      <path d="M8 22 Q200 165 392 22" fill="none" stroke="#f3d27a" stroke-opacity=".55" stroke-width="1.5"/><path d="M8 30 Q200 173 392 30" fill="none" stroke="#f3d27a" stroke-opacity=".3" stroke-width="1"/>
+      <text><textPath href="#arc" startOffset="50%" text-anchor="middle">BLACKJACK PAYS 3 TO 2</textPath></text>
+      <text class="sm"><textPath href="#arc2" startOffset="50%" text-anchor="middle">DEALER MUST HIT 16 · STAND ON 17 · INSURANCE PAYS 2 TO 1</textPath></text></svg>
+    <div class="dealer"><div class="lbl">Dealer <span id="dscore"></span></div><div id="dcards" class="cards"></div></div>
+    <div id="seats" class="seats"></div>
+    <div id="backPanel" class="backpanel hidden"></div>
+    <div id="betRing" class="betring" aria-hidden="true"><b></b><small>place bets</small></div>
+    <div id="insPrompt" class="insprompt hidden" role="dialog" aria-label="Insurance"><div class="insh">🛡 Insurance?</div><div class="insd">Dealer shows an <b>Ace</b> · costs <b id="insAmt"></b> · pays 2:1</div><div class="insb"><button id="insYes" class="primary">Insure</button><button id="insNo">No thanks</button></div><div class="insbar"><i id="insBarI"></i></div></div>
+    <div id="log" class="log"></div>
+    <div id="tlb" class="tlb hidden"></div>
+    <div id="chatWrap" class="chatwrap"><div id="chatFeed" class="chatfeed" title="Tap to open chat history"></div><button type="button" id="chatClose" class="chatclose hidden" aria-label="Close chat history">✕</button></div>
+    <div id="chatPicker" class="chatpicker hidden" aria-label="Emoji"></div>
+    <form id="chatBar" class="chatbar hidden"><button type="button" id="chatEmo" class="tiny emo" aria-label="Emoji">😊</button><input id="chatIn" maxlength="200" placeholder="Message table…" autocomplete="off" enterkeyhint="send"><button class="tiny primary">➤</button></form>
+    <div id="chatMenu" class="chatmenu hidden"><label><input type="checkbox" id="optChat" checked> Show table chat</label><label><input type="checkbox" id="optFriends"> Friends only</label><label><input type="checkbox" id="optFade"> Auto-fade messages</label><button type="button" id="chatInvite" class="tiny">📅 Invite with quicklink</button></div>
+    <div id="picker" class="picker hidden"></div>
+  </div>
+  <div class="banner" id="banner"></div>
+  <div class="controls">
+    <div class="row chiprow" id="chipRow"></div>
+    <div class="row betrow"><input type="range" id="betRange"><input type="number" id="betNum" inputmode="numeric"><span class="unit">M</span>
+      <button id="betBtn" class="tiny">Bet</button><button id="pairBtn" class="tiny">👯 Pair</button></div>
+    <div class="row"><button id="clear">Clear</button><button id="rebet2" class="ponly" type="button">Rebet ×2</button><button id="deal" class="primary">Deal</button></div>
+    <div class="row acts"><button data-a="hit">Hit</button><button data-a="stand">Stand</button><button data-a="double">Dbl</button><button data-a="split">Split</button><button data-a="surrender">Surr</button></div>
+    <div class="row quick" id="quickRow"><div id="quickBar" class="quickbar"></div><button id="pickBtn" class="tiny">😀＋</button><button id="chatBtn" class="tiny">💬</button><button id="chatOpt" class="tiny">⚙</button></div>
+  </div>
+</section>
+<section id="craps" class="view hidden">
+  <div class="tbar"><button id="cLeave" class="tiny">← Lobby</button><span id="cinfo"></span></div>
+  <div class="felt craps-felt" id="crapsFelt">
+    <div class="cstat"><div id="cWhat" class="cwhat">Place your bets</div><div class="chist" id="chist"></div></div>
+    <div class="ctable" id="cbets">
+      <div class="cplaces">
+        <div class="cbox" data-cb="place" data-n="4"><b>4</b><small>9:5</small><i class="stk"></i></div><div class="cbox" data-cb="place" data-n="5"><b>5</b><small>7:5</small><i class="stk"></i></div>
+        <div class="cbox" data-cb="place" data-n="6"><b>SIX</b><small>7:6</small><i class="stk"></i></div><div class="cbox" data-cb="place" data-n="8"><b>8</b><small>7:6</small><i class="stk"></i></div>
+        <div class="cbox" data-cb="place" data-n="9"><b>NINE</b><small>7:5</small><i class="stk"></i></div><div class="cbox" data-cb="place" data-n="10"><b>10</b><small>9:5</small><i class="stk"></i></div></div>
+      <div class="carea cdc" data-cb="dontCome"><span>DON'T COME <em class="mini">· BAR 12</em></span><i class="stk"></i></div>
+      <div class="carea ccome" data-cb="come"><span>COME</span><i class="stk"></i></div>
+      <div class="carea cfield" data-cb="field"><span class="fl">FIELD</span><span class="fnums"><u>2</u> · 3 · 4 · 9 · 10 · 11 · <u class="t">12</u></span><span class="fpay">2 pays double · 12 pays triple</span><i class="stk"></i></div>
+      <div class="carea cdp" data-cb="dontPass"><span>DON'T PASS <em class="mini">· BAR 12</em></span><i class="stk"></i></div>
+      <div class="cline"><div class="carea codds" data-cb="odds"><span>ODDS</span><i class="stk"></i></div><div class="carea cpass" data-cb="pass"><span>PASS LINE</span><i class="stk"></i></div></div>
+      <div class="tpuck off" id="tpuck">OFF</div>
+      <div class="dicefly" id="dice"><div class="die3" data-v="1"></div><div class="die3" data-v="1"></div></div>
+    </div>
+    <div id="cseats" class="cseats"></div>
+  </div>
+  <div class="chatlane" id="cLane"></div>
+  <div class="banner" id="cbanner"></div>
+  <div class="controls"><div class="row chiprow" id="cChipRow"></div>
+    <div class="row"><button id="cClear">Clear</button><button id="cRoll" class="primary">🎲 Roll</button></div></div>
+</section>
+<section id="slots" class="view hidden">
+  <div class="tbar"><button id="sLeave" class="tiny">← Lobby</button><span>🎰 Lucky Lever Slots</span></div>
+  <div class="slotwrap"><div class="machine" id="machine"><div class="marquee"><span class="bulbs"></span><b>LUCKY LEVER</b><span class="bulbs"></span></div><div class="reels" id="reels"><div class="reel"><div class="strip"></div></div><div class="reel"><div class="strip"></div></div><div class="reel"><div class="strip"></div></div><div class="payline"></div></div><div class="swin" id="sWin">Pull the lever!</div>
+    <div class="paytab" id="payTab"></div></div><button class="lever" id="lever" aria-label="Pull lever"><span class="knob"></span><span class="arm"></span></button></div>
+  <div class="controls"><div class="row chiprow" id="sBets"></div><div class="row"><button id="spin" class="primary">PULL ⤵</button></div></div>
+</section>
+<section id="roulette" class="view hidden">
+  <div class="tbar"><button id="rLeave" class="tiny">← Lobby</button><span id="rInfo">🎡 Roulette</span></div>
+  <div class="rstage" id="rStage">
+    <div class="rhist" id="rHist"></div>
+    <div class="rwheelbox"><canvas id="rWheel" width="520" height="520" aria-label="Roulette wheel"></canvas><div class="rres hidden" id="rRes"></div></div>
+    <div class="croupier" id="croupier"><div class="cav" id="cAv"></div><div class="cbubble hidden" id="cBub"></div></div>
+    <div class="rtimer" id="rTimer"><i id="rBar"></i><span id="rTxt">Waiting for bets</span></div>
+  </div>
+  <div class="rseats" id="rSeats"></div>
+  <div class="rboard" id="rBoard"></div>
+  <div class="chatlane" id="rLane"></div>
+  <div class="controls"><div class="row chiprow" id="rChips"></div>
+    <div class="row"><button id="rUndo">↶ Undo</button><button id="rClear">Clear</button><button id="rRebet" class="primary">⟳ Rebet</button></div></div>
+</section>
+<section id="coin" class="view hidden">
+  <div class="tbar"><button id="kLeave" class="tiny">← Lobby</button><span id="kTitle">🪙 Coin Toss · Single Flip</span><button id="kSwitch" class="tiny">⇄ Double Flip</button></div>
+  <div class="felt coin-felt" id="coinFelt"><div class="cstage" id="cStage"><div class="cfloor"></div><div class="ctopview" id="cTop" aria-label="Top view"><span>TOP</span></div><div class="csidelbl">SIDE</div></div>
+    <div id="coinWhat" class="cwhat">Place a bet — flip in <span id="coinT">–</span></div><div class="chist" id="kHist"></div>
+    <div class="kplayers" id="kPlayers"></div></div>
+  <div class="chatlane" id="kLane"></div>
+  <div class="banner" id="kbanner"></div>
+  <div class="controls"><div class="row chiprow" id="kChips"></div><div class="row" id="kSides"></div></div>
+</section>
+</main><aside id="chatDock" class="chatdock" aria-label="Table chat"><div class="dockh">💬 Table chat</div></aside></div>
+<div id="fx" class="fx"></div>
+<div id="msgr">
+  <div id="msgPanel" class="msgpanel hidden"><div class="mtabs" id="mTabs"></div><div id="mMsgs" class="mmsgs"></div><div id="rxPop" class="rxpop hidden"></div>
+    <div class="mchips"><input id="mAmt" type="text" inputmode="decimal" value="1M" placeholder="e.g. 250K" autocomplete="off" maxlength="14" title="Any amount: 2500, 250K, 1.5M"><button id="mSend" class="tiny">🎁 Send</button><button id="mReq" class="tiny">🙏 Request</button><span id="mCap" class="small"></span></div>
+    <form id="mForm" class="mform"><input id="mIn" maxlength="300" placeholder="Private message…" autocomplete="off"><button class="tiny primary">➤</button><button type="button" id="mInvite" class="tiny" title="Invite to a game">📅</button><button type="button" id="mMin" class="tiny">▾</button></form></div></div>
+<div id="pmenu" class="modal hidden"><div class="pm"><div id="pmHead"></div><div id="pmStats" class="pmstats"></div><button id="pmFriend">➕ Add friend</button><button id="pmMsg">✉️ Message</button><button id="pmBlock">🚫 Block</button><button id="pmMute" class="cmp">🔇 Mute in chat</button><button id="pmReport" class="cmp">🚩 Report</button><button id="pmBack" class="hidden">🎯 Back this hand</button><button id="pmKick">🗳 Vote-kick</button><button id="pmClose">Close</button></div></div>
+<div id="frModal" class="modal hidden"><div class="frm"><div class="frh"><b>👥 Friends</b><button type="button" id="frClose" class="tiny" aria-label="Close">✕</button></div><div class="ppane" id="pt-friends"><div class="rowl"><input id="fAdd" placeholder="Add friend by username" maxlength="16"><button id="fAddBtn" class="tiny primary">Add</button></div>
+    <label class="incogrow"><input type="checkbox" id="incog"> 🕶 Incognito — hide my online status and location from friends</label>
+    <div id="fIncoming"></div><div id="fList"></div><div id="fBlocked"></div></div></div></div>
+<div id="frConfirm" class="modal hidden"><div class="frc"><p id="frcText"></p><div class="frcb"><button type="button" id="frcCancel" class="primary">Cancel</button><button type="button" id="frcOk" class="danger">Remove</button></div></div></div>
+<div id="fbModal" class="modal hidden"><div class="fb"><h3>🐞 Developer feedback</h3><textarea id="fbText" maxlength="2000" placeholder="What happened? What did you expect?"></textarea>
+  <label class="small"><input type="checkbox" id="fbSnap" checked> Attach state snapshot (table, hands, UI state)</label><div id="fbCtx" class="small ctx"></div>
+  <div><button id="fbSend" class="primary">Send</button><button id="fbClose">Cancel</button></div></div></div>
+<div id="evModal" class="modal hidden"><div class="evm"><h3>📅 Events</h3><div class="evbody">
+  <label>Live now</label><div id="evActive"></div><label>Coming up</label><div id="evUpcoming"></div>
+  <label>Game rooms</label><div id="evRooms"></div>
+  <details class="evnew"><summary>➕ Create an invite room</summary>
+    <div class="evf"><input id="evTitle" maxlength="50" placeholder="Title (optional)"><div class="rowl"><select id="evGame"></select><select id="evTier"></select></div>
+    <div class="rowl"><label class="evl">Start <input id="evStart" type="datetime-local"></label><label class="evl">Length <select id="evDur"><option value="15">15 min</option><option value="30">30 min</option><option value="60" selected>1 h</option><option value="90">1.5 h</option><option value="120">2 h</option><option value="240">4 h</option></select></label></div>
+    <div class="small" id="evRange"></div>
+    <label class="evc"><input type="checkbox" id="evMatch"> Match setup (only you + seated players play; others watch)</label>
+    <label class="evc"><input type="checkbox" id="evSpec" checked> Allow spectators when full / match</label><label class="evc"><input type="checkbox" id="evSpecChat" checked> Spectators can chat</label><label class="evc"><input type="checkbox" id="evSpecEmo" checked> Spectators can send emojis</label>
+    <button id="evCreate" class="primary">Create room + quicklink</button><div id="evMade" class="small"></div></div></details>
+  <label>Promo code</label><div class="rowl"><input id="evCode" maxlength="24" placeholder="Enter code" autocomplete="off"><button id="evRedeem" class="tiny primary">Redeem</button></div>
+  </div><button id="evClose">Close</button></div></div>
+<div id="evPop" class="modal hidden"><div class="evpop"><div class="evpi">🎉</div><h3></h3><p></p><button id="evPopClaim" class="primary">🎁 Claim</button><button id="evPopLater">Later</button></div></div>
+<div id="nModal" class="modal hidden"><div class="fb"><h3>🔔 Notifications</h3><div id="nList" class="nlist"></div><button id="nClose">Close</button></div></div>
+<div id="adOverlay" class="modal hidden"><div><h3>📺 Demo ad</h3><p class="small">Ad stub (no ad provider configured). Reward in <b id="adCount">2</b>s…</p></div></div>
+<div id="ageGate" class="modal hidden"><div><h2>R18+ · Confirm your age</h2><p class="small">This simulated gambling game is for adults 18+ only. Enter your date of birth to continue. We only store that you confirmed 18+.</p><input id="dobGate" type="date"><button id="dobGo" class="primary">Confirm</button></div></div>
+<div id="rcheck" class="modal hidden"><div><h3>⏰ Reality check</h3><p id="rcText"></p><p class="small">Chips have no monetary value. Need a hand? <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">Gambling Help Online</a> 1800 858 858</p><button id="rcGo" class="primary">Keep playing</button><button id="rcStop">Take a break (log out)</button></div></div>
+<div id="age" class="modal hidden"><div><h2>18+ Only</h2><p>The chip store is for adults 18+. Chips are virtual, have no monetary value and can never be cashed out or redeemed.</p>
+  <button id="ageYes">I am 18 or older</button><button id="ageNo">Cancel</button></div></div>
+<div id="store" class="modal hidden"><div><h2>💎 Chip Store <small id="mode"></small></h2><p class="small">Virtual chips for entertainment only. No cash value. No cash-out.</p><div id="packs"></div><button id="closeStore">Close</button></div></div>
+<div id="toast"></div><script src="config.js"></script><script src="local-server.js"></script><script src="cards.js"></script><script src="coinsim.js"></script><script src="app.js"></script><script src="seats.js"></script><script src="premium.js"></script><script src="assets.js"></script><script src="roulette.js"></script><script src="voice.js"></script></body></html>

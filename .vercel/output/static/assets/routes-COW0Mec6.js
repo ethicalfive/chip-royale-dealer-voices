@@ -1,0 +1,1 @@
+import{t as e}from"./index-BqTCApFh.js";var t=e();function n(){return(0,t.jsx)(`iframe`,{title:`Chip Royale`,src:`/royale/index.html`,style:{position:`fixed`,inset:0,width:`100%`,height:`100%`,border:`none`,background:`#061018`}})}export{n as component};
